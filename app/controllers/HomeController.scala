@@ -1,7 +1,8 @@
 package controllers
 
 import javax.inject._
-import play.api._
+
+import models.Log
 import play.api.mvc._
 
 /**
@@ -19,6 +20,6 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
    * a path of `/`.
    */
   def index() = Action { implicit request: Request[AnyContent] =>
-    Ok("Welcome to Play!")
+    Ok(s"Welcome to Play! ${Log.findAll()}")
   }
 }

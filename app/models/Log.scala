@@ -3,7 +3,7 @@ package models
 import io.circe.Encoder
 import io.circe.generic.auto._
 import queries.CreateLog
-import scalikejdbc.{DBSession, TypeBinder, WrappedResultSet, autoConstruct}
+import scalikejdbc._
 import skinny.orm.SkinnyCRUDMapperWithId
 
 case class Log(
@@ -17,7 +17,7 @@ object Log extends SkinnyCRUDMapperWithId[Long, Log] {
   override def rawValueToId(value: Any) = value.toString.toLong
 
   override def defaultAlias = createAlias("l")
-  override def extract(rs: WrappedResultSet, n: scalikejdbc.ResultName[Log]) = autoConstruct(rs, n)
+  override def extract(rs: WrappedResultSet, n: ResultName[Log]) = autoConstruct(rs, n)
 
   def create(log: CreateLog)(implicit session: DBSession = autoSession): Long = {
     createWithAttributes(

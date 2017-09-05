@@ -298,6 +298,8 @@ JSONで作成するlogを受けとる
 case class CreateLog(logType: Int, content: String)
 ```
 
+---
+
 ### Log.create
 
 CreateLog classからDBにレコードを追加するコード

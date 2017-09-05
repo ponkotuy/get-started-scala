@@ -28,6 +28,19 @@
             el: '#logList',
             data: {
               logs: logs
+            },
+            methods: {
+              del: function(id) {
+                $.ajax({
+                  type: 'delete',
+                  url: '/log/' + id
+                }).done(function(data){
+                  location.reload(false);
+                }).fail(function(data){
+                  console.log("ERROR");
+                  location.reload(false);
+                });
+              }
             }
           });
         });
@@ -49,11 +62,9 @@
                 data: JSON.stringify({logType: this.logType, content: this.content}),
                 dataType: 'json'
               }).done(function(data) {
-                console.log(data);
                 location.reload(false);
               }).fail(function(data) {
                 console.log("ERROR");
-                console.log(data);
                 location.reload(false);
               });
             }
@@ -84,13 +95,14 @@
       </tbody>
     </table>
 
-    <h3>GET /logs</h3>
+    <h3>GET /logs, DELETE /log/:id</h3>
     <table id="logList" class="table table-striped table-condensed">
       <thead>
       <tr>
         <th>ID</th>
         <th>Type</th>
         <th>Content</th>
+        <th>Delete</th>
       </tr>
       </thead>
       <tbody>
@@ -98,6 +110,9 @@
         <td>{{log.id}}</td>
         <td>{{log.logType.name}}</td>
         <td>{{log.content}}</td>
+        <td>
+          <button type="button" class="btn btn-xs btn-danger" v-on:click="del(log.id)">Delete</button>
+        </td>
       </tr>
       </tbody>
     </table>

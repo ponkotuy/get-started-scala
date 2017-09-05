@@ -1,5 +1,8 @@
 package models
 
+import io.circe.Encoder
+import io.circe.generic.auto._
+import queries.CreateLog
 import scalikejdbc.{DBSession, TypeBinder, WrappedResultSet, autoConstruct}
 import skinny.orm.SkinnyCRUDMapperWithId
 
@@ -16,15 +19,15 @@ object Log extends SkinnyCRUDMapperWithId[Long, Log] {
   override def defaultAlias = createAlias("l")
   override def extract(rs: WrappedResultSet, n: scalikejdbc.ResultName[Log]) = autoConstruct(rs, n)
 
-  def create(log: Log)(implicit session: DBSession = autoSession): Long = {
+  def create(log: CreateLog)(implicit session: DBSession = autoSession): Long = {
     createWithAttributes(
-      'logType -> log.logType.value,
+      'logType -> log.logType,
       'content -> log.content
     )
   }
 }
 
-sealed abstract class LogType(val value: Int)
+abstract class LogType(val value: Int)
 
 object LogType {
   case object NotFoundError extends LogType(1)
@@ -32,6 +35,10 @@ object LogType {
   case object FormatError extends LogType(3)
 
   implicit val typeBinder: TypeBinder[LogType] = TypeBinder.int.map { i => find(i).get }
+
+  implicit val encoder: Encoder[LogType] = Encoder.forProduct2("name", "value") { u =>
+    (u.toString, u.value)
+  }
 
   val values = NotFoundError :: Exception :: FormatError :: Nil
   def find(value: Int): Option[LogType] = values.find(_.value == value)

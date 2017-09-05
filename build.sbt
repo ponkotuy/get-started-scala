@@ -7,8 +7,11 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.12.2"
 
+resolvers += "Bintary JCenter" at "http://jcenter.bintray.com"
+
 libraryDependencies ++= Seq(
   guice,
+  "play-circe" %% "play-circe" % "2608.3",
   "org.skinny-framework" %% "skinny-orm" % "2.4.0",
   "org.scalikejdbc" %% "scalikejdbc-play-initializer" % "2.6.0",
   "mysql" % "mysql-connector-java" % "6.0.6",

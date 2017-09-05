@@ -2,7 +2,6 @@ package controllers
 
 import javax.inject._
 
-import models.Log
 import play.api.mvc._
 
 /**
@@ -19,7 +18,5 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index() = Action { implicit request: Request[AnyContent] =>
-    Ok(s"Welcome to Play! ${Log.findAll()}")
-  }
+  def index() = Assets.versioned(path="/public", file="index.html")
 }

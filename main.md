@@ -317,6 +317,8 @@ DBSessionはTransactionなどでSession管理できる
 
 返り値はauto_incrementで生成したID
 
+---
+
 ### Controller
 
 LogControllerに以下を追記
